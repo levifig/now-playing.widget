@@ -3,7 +3,7 @@
 #
 # Inspired by the Last.fm widget
 
-command: 'spotify.widget/scripts/get_track_metadata.sh'
+command: 'now-playing.widget/scripts/get_track_metadata.sh'
 
 refreshFrequency: 5000
 
