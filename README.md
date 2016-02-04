@@ -13,6 +13,8 @@ because I never really used those apps for controlling my music player).
 ## Screenshot
 ![Screenshot](http://raw.github.com/levifig/now-playing.widget/master/screenshot.png)
 
+[Full desktop screenshot](http://i.imgur.com/bexUVuR.jpg)
+
 
 ## Caveats
 This is basically polling Spotify's API every time it updates so be gentle.
