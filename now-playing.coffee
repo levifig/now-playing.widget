@@ -1,5 +1,9 @@
-# Now Playing for Ubersicht
-# Levi Figueira, me@levifig.com
+# Now Playing for Übersicht
+# (Spotify-only... for now)
+#
+# By:
+# Levi Figueira
+# http://levifig.com
 
 command: 'now-playing.widget/scripts/get_track_metadata.sh'
 
@@ -32,7 +36,7 @@ update: (output) ->
       $('#track').text track.name
       $('#artist').text track.artists[0].name
       $('#album').text " - " + track.album.name
-      $.getScript 'now-playing.widge/scripts/jquery.textfill.min.js', ->
+      $.getScript 'now-playing.widget/scripts/jquery.textfill.min.js', ->
         $('#now-playing').textfill
           minFontPixels: 8
           maxFontPixels: 18

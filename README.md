@@ -18,7 +18,7 @@ to control my media player).
 
 ![Full Desktop Screenshot](http://raw.github.com/levifig/now-playing.widget/master/screenshot-3.png)
 
-[Full Desktop Screenshot (full size)](http://i.imgur.com/bexUVuR.jpg)
+[Desktop Screenshot (full size)](http://i.imgur.com/bexUVuR.jpg)
 
 
 ## Caveats
