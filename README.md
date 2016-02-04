@@ -1,8 +1,9 @@
 # Now Playing Widget
 
 ## Motivation
-I couldn't find any Übersicht widgets for Spotify that included the album's
-artwork so I decided to make one.
+I couldn't find any [Übersicht](http://tracesof.net/uebersicht/) widgets 
+for [Spotify](https://www.spotify.com) that included the album's artwork so
+I decided to make one.
 
 Inspired by long abandoned apps like [Bowtie](http://bowtieapp.com/) and
 [CoverSutra](http://sophiestication.com/coversutra/), but focused on track
