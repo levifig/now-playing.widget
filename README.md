@@ -11,10 +11,14 @@ on track information display, not control (I never really used those apps
 to control my media player).
 
 
-## Screenshot
-![Screenshot](http://raw.github.com/levifig/now-playing.widget/master/screenshot.png)
+## Screenshots
+![Normal Display](http://raw.github.com/levifig/now-playing.widget/master/screenshot.png)
 
-[Full desktop screenshot](http://i.imgur.com/bexUVuR.jpg)
+![Truncated & Resized](http://raw.github.com/levifig/now-playing.widget/master/screenshot-2.png)
+
+![Full Desktop Screenshot](http://raw.github.com/levifig/now-playing.widget/master/screenshot-3.png)
+
+[Full Desktop Screenshot (full size)](http://i.imgur.com/bexUVuR.jpg)
 
 
 ## Caveats
