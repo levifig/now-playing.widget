@@ -16,9 +16,13 @@ to control my media player).
 
 ![Truncated & Resized](http://raw.github.com/levifig/now-playing.widget/master/screenshot-2.png)
 
-![Full Desktop Screenshot](http://raw.github.com/levifig/now-playing.widget/master/screenshot-3.png)
+![Alternate/Pinned Layout](http://raw.github.com/levifig/now-playing.widget/master/screenshot-3.png)
 
-[Desktop Screenshot (full size)](http://i.imgur.com/bexUVuR.jpg)
+
+## Usage
+Download [ZIP archive](https://github.com/levifig/now-playing.widget/blob/master/now-playing.widget.zip) to your Übersicht widgets folder (i.e. `~/Library/Application Support/Übersicht/widgets`).
+
+For alternate layout (pinned to the bottom of the screen, as seen in the third screenshot above), edit `now-playing.coffee` and just below `style:`, in line 59, change the `alt-layout` variable value to `true` (default is `false`).
 
 
 ## Caveats
