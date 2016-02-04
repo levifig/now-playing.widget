@@ -1,0 +1,6 @@
+{
+  "name": "Spotify",
+  "description": "Displays Spotify's current track information (track name, artist, and album), with the album's cover artwork as the backdrop.",
+  "author": "Levi Figueira",
+  "email": "levi@hakr.io"
+}
