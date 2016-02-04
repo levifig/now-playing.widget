@@ -1,20 +1,18 @@
-# Spotify for Ubersicht
+# Now Playing for Ubersicht
 # Levi Figueira, me@levifig.com
-#
-# Inspired by the Last.fm widget
 
 command: 'now-playing.widget/scripts/get_track_metadata.sh'
 
 refreshFrequency: 5000
 
 render: (output) -> '''
-<div id="spotify">
+<div id="now-playing">
   <div id="display">
     <div id="art"></div>
     <div id="coverart"></div>
     <div id="text">
       <p id="artistalbum"><span id="artist"></span><span id="album"></span></p>
-      <p id="track">Spotify not running…</p>
+      <p id="track">now-playing not running…</p>
     </div>
   </div>
 </div>
@@ -24,18 +22,18 @@ afterRender: ->
 
 update: (output) ->
   if !output
-    $('#spotify').css
+    $('#now-playing').css
       height: 0
   else
-    $('#spotify').css 'width', $('#spotify').width
-    $('#spotify').css 'height', $('#spotify').height
+    $('#now-playing').css 'width', $('#now-playing').width
+    $('#now-playing').css 'height', $('#now-playing').height
     track = JSON.parse(output)
     if $('#track').text() != track.name
       $('#track').text track.name
       $('#artist').text track.artists[0].name
       $('#album').text " - " + track.album.name
-      $.getScript 'scripts/jquery.textfill.min.js', ->
-        $('#spotify').textfill
+      $.getScript 'now-playing.widge/scripts/jquery.textfill.min.js', ->
+        $('#now-playing').textfill
           minFontPixels: 8
           maxFontPixels: 18
           explicitHeight: 40
@@ -52,7 +50,7 @@ style: """
 color: #fff
 bottom: 0
 left: 90px
-#spotify
+#now-playing
   box-shadow: 25px 25px 50px 15px rgba(0,0,0,0.5)
   border-radius: 8px 8px 0 0
   border-color: rgba(0,0,0,0.8)
