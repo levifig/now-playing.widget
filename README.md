@@ -6,9 +6,9 @@ for [Spotify](https://www.spotify.com) that included the album's artwork so
 I decided to make one.
 
 Inspired by long abandoned apps like [Bowtie](http://bowtieapp.com/) and
-[CoverSutra](http://sophiestication.com/coversutra/), but focused on track
-information, not control (both because of Übersicht limitations, but also
-because I never really used those apps for controlling my music player).
+[CoverSutra](http://sophiestication.com/coversutra/), but focused solely
+on track information display, not control (I never really used those apps
+to control my media player).
 
 
 ## Screenshot
@@ -20,9 +20,9 @@ because I never really used those apps for controlling my music player).
 ## Caveats
 This is basically polling Spotify's API every time it updates so be gentle.
 I've set the default refresh rate to 5 seconds but I don't know how nice
-Spotify is with folks pulling a 640px cover every 5 seconds. I definitely
-have thought of implementing some sort of caching mechanism, but that's a bit
-above my "pay grade" (help welcome and encourage *wink* *wink*).
+Spotify is with folks pulling a 640px cover every 5 seconds. I have definitely
+[thought of implementing some sort of caching system](https://github.com/levifig/now-playing.widget/issues/2)
+but haven't decided how to tackle that issue... yet. :)
 
 
 ## Disclaimer
@@ -49,6 +49,6 @@ and I'll definitely consider them. I do appreciate your help in advance.
 
 
 ## TODO
-- CACHING, CACHING, CACHING
+- [CACHING, CACHING, CACHING](https://github.com/levifig/now-playing.widget/issues/2)
 - iTunes support
 - Better error handling
