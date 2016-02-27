@@ -93,6 +93,8 @@ p
   left:0
 
 #text
+  box-sizing: border-box
+  width: 100%
   position: absolute
   font-family: Droid Sans, Helvetica Neue, Helvetica, Arial
   z-index: 3
