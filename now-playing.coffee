@@ -30,11 +30,9 @@ afterRender: ->
 
 update: (output) ->
   if !output
-    $('#now-playing').css
-      height: 0
+    $('#now-playing').hide()
   else
-    $('#now-playing').css 'width', $('#now-playing').width
-    $('#now-playing').css 'height', $('#now-playing').height
+    $('#now-playing').show()
     track = JSON.parse(output)
     if $('#track').text() != track.name
       $('#track').text track.name
@@ -86,7 +84,7 @@ p
   height: 200px
   z-index: 2
   background-image: -webkit-gradient(
-    linear, left top, left bottom, from(rgba(0,0,0,0)), to(rgba(0,0,0,1)), 
+    linear, left top, left bottom, from(rgba(0,0,0,0)), to(rgba(0,0,0,1)),
     color-stop(.5,rgba(0,0,0,0.3)), color-stop(.6,rgba(0,0,0,0.6)), color-stop(.9,rgba(0,0,0,0.9)));
   position: absolute
   top:0
