@@ -1,5 +1,5 @@
 # Now Playing for Übersicht
-# v0.7
+# v0.7.1
 #
 # For more info:
 # http://github.com/levifig/now-playing.widget
