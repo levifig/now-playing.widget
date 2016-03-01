@@ -1,10 +1,13 @@
 # Now Playing for Übersicht
-# (Spotify-only... for now)
+# v0.7
 #
-# By:
+# For more info:
+# http://github.com/levifig/now-playing.widget
+#
 # Levi Figueira
 # http://levifig.com
-
+#
+# ==================================
 # Alternate/bottom-pinned layout
 # Set `alt-layout` to `true` (see `style:` section below)
 
