@@ -20,7 +20,7 @@ to control my media player).
 
 
 ## Usage
-Download [ZIP archive](https://github.com/levifig/now-playing.widget/blob/master/now-playing.widget.zip) to your Übersicht widgets folder (i.e. `~/Library/Application Support/Übersicht/widgets`).
+Download [ZIP archive](https://github.com/levifig/now-playing.widget/archive/master.zip) to your Übersicht widgets folder (i.e. `~/Library/Application Support/Übersicht/widgets`).
 
 For alternate layout (pinned to the bottom of the screen, as seen in the third screenshot above), edit `now-playing.coffee` and just below `style:`, in line 59, change the `alt-layout` variable value to `true` (default is `false`).
 

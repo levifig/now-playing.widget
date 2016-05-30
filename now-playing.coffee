@@ -1,5 +1,5 @@
 # Now Playing for Übersicht
-# v0.7.1
+# v0.8
 #
 # For more info:
 # http://github.com/levifig/now-playing.widget
@@ -11,7 +11,7 @@
 # Alternate/bottom-pinned layout
 # Set `alt-layout` to `true` (see `style:` section below)
 
-command: 'now-playing.widget/scripts/get_track_metadata.sh'
+command: 'now-playing.widget/lib/get_track_metadata.sh'
 
 refreshFrequency: 5000
 
@@ -41,7 +41,7 @@ update: (output) ->
       $('#track').text track.name
       $('#artist').text track.artists[0].name
       $('#album').text track.album.name
-      $.getScript 'now-playing.widget/scripts/jquery.textfill.min.js', ->
+      $.getScript 'now-playing.widget/lib/jquery.textfill.min.js', ->
         $('#now-playing').textfill
           minFontPixels: 8
           maxFontPixels: 16
