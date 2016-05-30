@@ -46,7 +46,7 @@ at your own risk... :P
 I initially started by customizing Patrick Pan's
 [Last.FM widget](http://tracesof.net/uebersicht-widgets/#lastfm) but then
 decided to move away from using Last.FM and finding ways to pull the information
-directlyfrom the Spotify app and Spotify's API. But I definitely think Patrick
+directly from the Spotify app and Spotify's API. But I definitely think Patrick
 deserves the above acknowledgement for having designed the structure that I
 reused and remixed in the making of this widget.
 
