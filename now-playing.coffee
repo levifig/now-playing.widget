@@ -94,6 +94,10 @@ p
   left:0
 
 #text
+  box-sizing: border-box
+  width: calc(100% - 0.8em)
+  overflow: hidden
+  white-space: nowrap
   position: absolute
   font-family: Droid Sans, Helvetica Neue, Helvetica, Arial
   z-index: 3
