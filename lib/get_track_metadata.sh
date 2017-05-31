@@ -13,22 +13,33 @@ end tell
 EOF
 }
 
+get_from_current_track()
+{
+  osascript << EOF
+tell application "Spotify"
+  set currentUrl to $1 of current track as string
+  return currentUrl
+  end tell
+EOF
+}
+
+get_json()
+{
+  printf '{
+      "artwork_url": "%s",
+      "track_name": "%s",
+      "artist": "%s",
+      "album": "%s"
+  }' "$(get_from_current_track "artwork url")" "$(get_from_current_track "name")" "$(get_from_current_track "artist")" "$(get_from_current_track "album")"
+}
+
 if [ $check -eq 1 ]; then
-  track_id=$(get_track_id)
   cur_track_json=""
   scriptdir=$( dirname "${BASH_SOURCE[0]}" )
-  if [ -f "$scriptdir/cur_track.id" ]; then
-    cur_track_id=`cat $scriptdir/cur_track.id`
-  else
-    cur_track_id=""
-  fi
-  if [ "$track_id" == "$cur_track_id" ] && [ -f "$scriptdir/cur_track.json" ]; then
-    cur_track_json=`cat $scriptdir/cur_track.json`
-  else
-    cur_track_json=`curl -s -X GET "https://api.spotify.com/v1/tracks/$track_id"`
-    echo $track_id > $scriptdir/cur_track.id
-    echo $cur_track_json > $scriptdir/cur_track.json
-  fi
+
+  cur_track_json=$(get_json)
+
+  echo $cur_track_json > $scriptdir/cur_track.json
   echo "$cur_track_json"
 else
   exit

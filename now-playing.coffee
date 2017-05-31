@@ -37,19 +37,19 @@ update: (output) ->
   else
     $('#now-playing').show()
     track = JSON.parse(output)
-    if $('#track').text() != track.name
-      $('#track').text track.name
-      $('#artist').text track.artists[0].name
-      $('#album').text track.album.name
+    if $('#track').text() != track.track_name
+      $('#track').text track.track_name
+      $('#artist').text track.artist
+      $('#album').text track.album
       $.getScript 'now-playing.widget/lib/jquery.textfill.min.js', ->
         $('#now-playing').textfill
           minFontPixels: 8
           maxFontPixels: 16
           explicitHeight: 40
           innerTag: '#track'
-      if(track.album)
+      if(track.artwork_url)
         $('#art').css
-          'background-image': 'url(' + track.album.images[0].url + ')'
+          'background-image': 'url(' + track.artwork_url + ')'
           'background-size': 'cover'
           'background-repeat': 'no-repeat'
    return
