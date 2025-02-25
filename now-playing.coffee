@@ -37,19 +37,19 @@ update: (output) ->
   else
     $('#now-playing').show()
     track = JSON.parse(output)
-    if $('#track').text() != track.track_name
-      $('#track').text track.track_name
-      $('#artist').text track.artist
-      $('#album').text track.album
+    if $('#track').text() != track.name # Naming differences to access Spotify API data
+      $('#track').text track.name
+      $('#artist').text track.artists[0].name # Better artist object handling (grabs artist name from first object)
+      $('#album').text track.album.name
       $.getScript 'now-playing.widget/lib/jquery.textfill.min.js', ->
         $('#now-playing').textfill
           minFontPixels: 8
           maxFontPixels: 16
           explicitHeight: 40
           innerTag: '#track'
-      if(track.artwork_url)
+      if(track.album)
         $('#art').css
-          'background-image': 'url(' + track.artwork_url + ')'
+          'background-image': 'url(' + track.album.images[0].url + ')'
           'background-size': 'cover'
           'background-repeat': 'no-repeat'
    return
@@ -64,18 +64,17 @@ bottom: 10px
 left: 90px
 
 #now-playing
-  box-shadow: 25px 25px 50px 15px rgba(0,0,0,0.5)
-  border-radius: 8px
-  border-color: rgba(0,0,0,0.8)
-  position: relative
-  overflow: auto
-  background: rgba(0,0,0,0.1)
+  height: 200px
+  overflow: hidden
 
 p
   margin: 0
 
 #display
   padding:  0 0
+
+#art, #coverart
+  border-radius: 9px
 
 #art
   width: 200px
