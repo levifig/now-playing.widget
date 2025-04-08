@@ -1,62 +1,68 @@
-# Now Playing Widget
+# Now Playing Widget for Übersicht
 
-## Motivation
-I couldn't find any [Übersicht](http://tracesof.net/uebersicht/) widgets 
-for [Spotify](https://www.spotify.com) that included the album's artwork so
-I decided to make one.
-
-Inspired by long abandoned apps like [Bowtie](http://bowtieapp.com/) and
-[CoverSutra](http://sophiestication.com/coversutra/), but focused solely
-on track information display, not control (I never really used those apps
-to control my media player).
-
+A sleek Spotify Now Playing widget for [Übersicht](http://tracesof.net/uebersicht/) that displays the current track information along with album artwork.
 
 ## Screenshots
+
 ![Normal Display](http://raw.github.com/levifig/now-playing.widget/master/screenshot.png)
 
 ![Truncated & Resized](http://raw.github.com/levifig/now-playing.widget/master/screenshot-2.png)
 
 ![Alternate/Pinned Layout](http://raw.github.com/levifig/now-playing.widget/master/screenshot-3.png)
 
+## Installation
 
-## Usage
-Download [ZIP archive](https://github.com/levifig/now-playing.widget/archive/master.zip) to your Übersicht widgets folder (i.e. `~/Library/Application Support/Übersicht/widgets`).
+Download [ZIP archive](https://github.com/liamschwie/now-playing.widget/archive/master.zip) to your Übersicht widgets folder (i.e. `~/Library/Application Support/Übersicht/widgets`).
 
+## Setting Up Spotify API Access
+
+This widget requires Spotify API credentials to function properly. Follow these steps to set up your own Spotify Developer App:
+
+1. **Create a Spotify Developer Account**
+   - Visit [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/)
+   - Log in with your Spotify account or create one if needed
+
+2. **Create a New App**
+   - Click "Create an App" on the dashboard
+   - Fill in the app name (e.g., "Übersicht Now Playing Widget") and description
+   - For "Which API/SDKs are you planning to use?", select "Web API"
+   - Set the Redirect URI to `http://localhost:8888/callback` (this won't be used but is required)
+   - Accept the terms and create the app
+
+3. **Get Your Credentials**
+   - Once your app is created, you'll see your Client ID on the dashboard
+   - Click "Show Client Secret" to reveal your Client Secret
+   - Copy both the Client ID and Client Secret
+
+4. **Add Credentials to the Widget**
+   - Open the `now-playing.widget/lib/get_track_metadata.sh` file
+   - Replace the placeholder values with your actual credentials:
+     ```
+     # Spotify API credentials
+     CLIENT_ID="your_client_id_here"
+     CLIENT_SECRET="your_client_secret_here"
+     ```
+
+5. **Make the Script Executable**
+   - Open Terminal
+   - Run: `chmod +x ~/Library/Application\ Support/Übersicht/widgets/now-playing.widget/lib/get_track_metadata.sh`
+
+## Customization
+
+### Alternate Layout
 For alternate layout (pinned to the bottom of the screen, as seen in the third screenshot above), edit `now-playing.coffee` and just below `style:`, in line 59, change the `alt-layout` variable value to `true` (default is `false`).
 
+### Size and Appearance
+- Adjust the width and height values in the style section to change the widget size
+- Modify the border-radius property to change the corner roundness
 
-## Caveats
-This is basically polling Spotify's API every time it updates so be gentle.
-I've set the default refresh rate to 5 seconds but I don't know how nice
-Spotify is with folks pulling a 640px cover every 5 seconds. I have definitely
-[thought of implementing some sort of caching system](https://github.com/levifig/now-playing.widget/issues/2)
-but haven't decided how to tackle that issue... yet. :)
+## Troubleshooting
 
-
-## Disclaimer
-I'm a _hacker_ not a _legit programmer_ (whatever that means). I reused &
-remixed bits and pieces from several sources. I have some experience with
-Bash and Javascript, but had never ventured into Coffeescript (though I
-use and love Ruby). I was pleasantly surprised and enjoyed using it
-but I might've made some crude mistakes in syntax or logic. Use this
-at your own risk... :P
-
-
-## Acknowledgements
-I initially started by customizing Patrick Pan's
-[Last.FM widget](http://tracesof.net/uebersicht-widgets/#lastfm) but then
-decided to move away from using Last.FM and finding ways to pull the information
-directly from the Spotify app and Spotify's API. But I definitely think Patrick
-deserves the above acknowledgement for having designed the structure that I
-reused and remixed in the making of this widget.
-
+If the widget doesn't display:
+- Make sure Spotify is running and playing a track
+- Check that your API credentials are correctly entered
+- Verify that the script has execution permissions
 
 ## Contributing
-If you have ideas for improvements and, especially, fixes, please open a PR
-and I'll definitely consider them. I do appreciate your help in advance.
 
-
-## TODO
-- [CACHING, CACHING, CACHING](https://github.com/levifig/now-playing.widget/issues/2)
-- iTunes support
-- Better error handling
+If you have ideas for improvements or fixes, please open a PR.
