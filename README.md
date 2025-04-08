@@ -2,6 +2,9 @@
 
 A sleek Spotify Now Playing widget for [Übersicht](http://tracesof.net/uebersicht/) that displays the current track information along with album artwork.
 
+Inspired by long abandoned apps like [Bowtie](http://bowtieapp.com/) and [CoverSutra](http://sophiestication.com/coversutra/), but focused solely on track information display, not control (I never really used those apps to control my media player).
+
+
 ## Screenshots
 
 ![Normal Display](http://raw.github.com/levifig/now-playing.widget/master/screenshot.png)
@@ -12,7 +15,7 @@ A sleek Spotify Now Playing widget for [Übersicht](http://tracesof.net/uebersic
 
 ## Installation
 
-Download [ZIP archive](https://github.com/liamschwie/now-playing.widget/archive/master.zip) to your Übersicht widgets folder (i.e. `~/Library/Application Support/Übersicht/widgets`).
+Download [ZIP archive](https://github.com/levifi/now-playing.widget/archive/master.zip) to your Übersicht widgets folder (i.e. `~/Library/Application Support/Übersicht/widgets`).
 
 ## Setting Up Spotify API Access
 
