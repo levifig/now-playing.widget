@@ -1,1 +1,14 @@
-lib/cur_track.json
+# Logs
+logs/*.log
+logs/*.log.*
+logs/*.gz
+
+# Cache
+cache/
+!cache/.gitkeep
+
+# Configuration (user-specific)
+.config
+
+# macOS
+.DS_Store

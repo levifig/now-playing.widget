@@ -1,71 +1,84 @@
 # Now Playing Widget for Übersicht
 
-A sleek Spotify Now Playing widget for [Übersicht](http://tracesof.net/uebersicht/) that displays the current track information along with album artwork.
+A sleek Now Playing widget for [Übersicht](http://tracesof.net/uebersicht/) that displays the current track information along with album artwork.
+
+Currently supports:
+- Spotify
+- Apple Music
 
 Inspired by long abandoned apps like [Bowtie](http://bowtieapp.com/) and [CoverSutra](http://sophiestication.com/coversutra/), but focused solely on track information display, not control (I never really used those apps to control my media player).
 
-
-## Screenshots
-
-![Normal Display](http://raw.github.com/levifig/now-playing.widget/master/screenshot.png)
-
-![Truncated & Resized](http://raw.github.com/levifig/now-playing.widget/master/screenshot-2.png)
-
-![Alternate/Pinned Layout](http://raw.github.com/levifig/now-playing.widget/master/screenshot-3.png)
-
 ## Installation
 
-Download [ZIP archive](https://github.com/levifi/now-playing.widget/archive/master.zip) to your Übersicht widgets folder (i.e. `~/Library/Application Support/Übersicht/widgets`).
+1. Make sure you have [Übersicht](http://tracesof.net/uebersicht/) installed
+2. Clone this repository to your Übersicht widgets folder:
 
-## Setting Up Spotify API Access
+   ```bash
+   git clone https://github.com/levifig/now-playing.widget.git $HOME/Library/Application\ Support/Übersicht/widgets/now-playing.widget
+   ```
 
-This widget requires Spotify API credentials to function properly. Follow these steps to set up your own Spotify Developer App:
+3. That's it! The widget works out of the box with no additional configuration required.
 
-1. **Create a Spotify Developer Account**
-   - Visit [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/)
-   - Log in with your Spotify account or create one if needed
+Alternatively, download the [ZIP archive](https://github.com/levifig/now-playing.widget/archive/master.zip) and extract it into your Übersicht widgets folder (i.e. `~/Library/Application Support/Übersicht/widgets`).
 
-2. **Create a New App**
-   - Click "Create an App" on the dashboard
-   - Fill in the app name (e.g., "Übersicht Now Playing Widget") and description
-   - For "Which API/SDKs are you planning to use?", select "Web API"
-   - Set the Redirect URI to `http://localhost:8888/callback` (this won't be used but is required)
-   - Accept the terms and create the app
+## Player Priority
 
-3. **Get Your Credentials**
-   - Once your app is created, you'll see your Client ID on the dashboard
-   - Click "Show Client Secret" to reveal your Client Secret
-   - Copy both the Client ID and Client Secret
+When multiple music players are running at the same time, the widget will display information based on player priority. The default priority is:
 
-4. **Add Credentials to the Widget**
-   - Open the `now-playing.widget/lib/get_track_metadata.sh` file
-   - Replace the placeholder values with your actual credentials:
-     ```
-     # Spotify API credentials
-     CLIENT_ID="your_client_id_here"
-     CLIENT_SECRET="your_client_secret_here"
-     ```
+1. Spotify
+2. Apple Music
 
-5. **Make the Script Executable**
-   - Open Terminal
-   - Run: `chmod +x ~/Library/Application\ Support/Übersicht/widgets/now-playing.widget/lib/get_track_metadata.sh`
+The first player in the list gets priority when multiple players are active. If only one player is running or playing, that player will be displayed regardless of priority.
+
+Player priority is currently set in `lib/get_track_metadata.sh` (line 24: `PLAYER_PRIORITY`).
 
 ## Customization
 
 ### Alternate Layout
-For alternate layout (pinned to the bottom of the screen, as seen in the third screenshot above), edit `now-playing.coffee` and just below `style:`, in line 59, change the `alt-layout` variable value to `true` (default is `false`).
+
+For an alternate layout (pinned to the bottom of the screen), edit `now-playing.jsx` and replace the `className` export with the commented alternate version at the bottom of the file (around line 200).
 
 ### Size and Appearance
-- Adjust the width and height values in the style section to change the widget size
+
+All styling is configured in the `className` export in `now-playing.jsx`:
+- Adjust the width and height values to change the widget size
 - Modify the border-radius property to change the corner roundness
+- Customize colors, fonts, shadows, and positioning as desired
+
+## Logging
+
+The widget includes simple logging for debugging. Edit the constants at the top of `lib/logging.sh` to configure:
+
+- **`LOG_MODE`**: Set to `OFF`, `ERROR`, `WARN`, `INFO`, or `DEBUG` (default: `ERROR`)
+- **`LOG_RETENTION_DAYS`**: Days to keep old logs (default: 7)
+- **`LOG_MAX_SIZE_MB`**: Max log size before rotation (default: 5MB)
+
+Logs are stored in the `logs/` directory with automatic rotation (`api.log` → `api.1.log` → `api.2.log`, etc.). Higher numbers indicate older log files.
 
 ## Troubleshooting
 
-If the widget doesn't display:
-- Make sure Spotify is running and playing a track
-- Check that your API credentials are correctly entered
-- Verify that the script has execution permissions
+### Widget Not Updating
 
-## Contributing
+If the widget isn't updating with the current track:
 
-If you have ideas for improvements or fixes, please open a PR.
+1. Make sure your music player (Spotify or Apple Music) is running and playing music
+2. Check the widget's console output for errors in Übersicht
+3. Refresh the widget in Übersicht
+4. Enable debug logging in `lib/logging.sh` and check the logs
+
+### Permissions Issues
+
+The widget uses AppleScript to communicate with your music players. If you encounter permission issues, ensure Übersicht has the necessary accessibility permissions in System Preferences > Security & Privacy > Privacy > Automation.
+
+## Privacy and Security
+
+The widget uses macOS AppleScript to retrieve track information directly from Spotify and Apple Music. No data is sent to any external servers. All communication happens locally on your machine.
+
+## Acknowledgments
+
+- [Übersicht](http://tracesof.net/uebersicht/)
+- [jq](https://stedolan.github.io/jq/) for JSON processing
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
