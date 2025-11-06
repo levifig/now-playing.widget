@@ -1,11 +1,5 @@
-# Logs
-logs/*.log
-logs/*.log.*
-logs/*.gz
-
-# Cache
+logs/
 cache/
-!cache/.gitkeep
 
 # Configuration (user-specific)
 .config
