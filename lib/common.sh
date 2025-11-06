@@ -124,25 +124,31 @@ cache_artwork() {
 # init_logging, log_api, log_fs, and other logging functions are now in logging.sh
 
 # Log state changes to avoid spamming logs
+# Uses current_track.json instead of separate .state file
 log_state_change() {
-  local state_file=$1
+  local cache_file=$1
   local new_state=$2
   local message=$3
 
-  # Make sure the state file directory exists - suppress errors
-  local state_dir=$(dirname "$state_file")
-  mkdir -p "$state_dir" 2>/dev/null || log_fs_warn "Could not create state directory $state_dir"
-
-  if [ ! -f "$state_file" ]; then
-    echo "$new_state" > "$state_file"
+  # Check if cache file exists and has is_playing field
+  if [ ! -f "$cache_file" ]; then
+    # No cache yet, log the state
     log_api_info "$message"
     log_fs_debug "$message"
     return 0
   fi
 
-  local current_state=$(cat "$state_file")
-  if [ "$current_state" != "$new_state" ]; then
-    echo "$new_state" > "$state_file"
+  # Get current is_playing state from cache
+  local current_is_playing=$(jq -r '.is_playing // "unknown"' "$cache_file" 2>/dev/null)
+  local new_is_playing="false"
+
+  # Convert state to is_playing boolean
+  if [ "$new_state" = "playing" ]; then
+    new_is_playing="true"
+  fi
+
+  # Log only if state changed
+  if [ "$current_is_playing" != "$new_is_playing" ]; then
     log_api_info "$message"
     log_fs_debug "$message"
     return 0
@@ -185,20 +191,32 @@ update_track_state() {
     fi
 
     # Update with new data and state - format with indentation
+    # Reorder fields to put artwork (url/path/data) at the end for better visibility
     echo "$track_data" | jq --arg player "$active_player" \
       --argjson playing "$is_playing" \
       --argjson running "$is_running" \
       --argjson ts "$timestamp" \
-      '. + {player: $player, is_playing: $playing, player_running: $running, last_updated: $ts}' > "$cache_file"
+      '. as $orig | {
+        track_id: .track_id,
+        track_name: .track_name,
+        artist: .artist,
+        album: .album,
+        player: $player,
+        is_playing: $playing,
+        player_running: $running,
+        last_updated: $ts
+      } + if $orig.artwork_url then {artwork_url: $orig.artwork_url} else {} end + if $orig.artwork_path then {artwork_path: $orig.artwork_path} else {} end' > "$cache_file"
   elif [ -f "$cache_file" ]; then
     # Update existing track data with new state
     if jq -e '.' "$cache_file" >/dev/null 2>&1; then
+      local cache_dir=$(dirname "$cache_file")
+      local cache_filename=$(basename "$cache_file")
       jq --arg player "$active_player" \
         --argjson playing "$is_playing" \
         --argjson running "$is_running" \
         --argjson ts "$timestamp" \
         '.player = $player | .is_playing = $playing | .player_running = $running | .last_updated = $ts' \
-        "$cache_file" > "${cache_file}.tmp" && mv "${cache_file}.tmp" "$cache_file"
+        "$cache_file" > "${cache_dir}/.${cache_filename}.tmp" && mv "${cache_dir}/.${cache_filename}.tmp" "$cache_file"
     else
       log_fs_warn "Invalid JSON in cache file"
       echo "{\"player\": \"$active_player\", \"is_playing\": $is_playing, \"player_running\": $is_running, \"last_updated\": $timestamp}" | jq '.' > "$cache_file"
@@ -245,7 +263,9 @@ clean_json_cache() {
     # Validate JSON before formatting
     if jq -e '.' "$cache_file" >/dev/null 2>&1; then
       # Format JSON with proper indentation
-      jq '.' "$cache_file" > "${cache_file}.tmp" && mv "${cache_file}.tmp" "$cache_file"
+      local cache_dir=$(dirname "$cache_file")
+      local cache_filename=$(basename "$cache_file")
+      jq '.' "$cache_file" > "${cache_dir}/.${cache_filename}.tmp" && mv "${cache_dir}/.${cache_filename}.tmp" "$cache_file"
       return 0
     else
       log_fs_error "Invalid JSON in cache file during cleaning"

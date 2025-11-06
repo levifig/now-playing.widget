@@ -17,7 +17,6 @@ CACHE_DIR="$(dirname "$SCRIPT_DIR")/cache"
 CURRENT_TRACK_FILE="$CACHE_DIR/current_track.json"
 ARTWORK_DIR="$CACHE_DIR/artwork"
 AUTH_FILE="$CACHE_DIR/auth.json"
-STATE_FILE="$CACHE_DIR/.state"
 CACHE_EXPIRATION=24       # Cache expiration time in hours
 MAX_CACHE_SIZE=100        # Maximum cache size in MB
 
@@ -126,7 +125,7 @@ case "$ACTIVE_PLAYER" in
     ;;
 esac
 
-log_state_change "$STATE_FILE" "$player_state" "$ACTIVE_PLAYER is $player_state" || true
+log_state_change "$CURRENT_TRACK_FILE" "$player_state" "$ACTIVE_PLAYER is $player_state" || true
 
 # Get current track ID if player is running
 current_track_id=""
@@ -179,6 +178,15 @@ case "$player_state" in
     exit 0
     ;;
 esac
+
+# For playing state, check if track has changed before fetching full info
+if [ "$player_state" = "playing" ]; then
+  if ! has_track_changed "$CURRENT_TRACK_FILE" "$current_track_id"; then
+    # Same track still playing, just update state
+    update_track_state "$CURRENT_TRACK_FILE" "$ACTIVE_PLAYER" "$player_state"
+    exit 0
+  fi
+fi
 
 # Get full track info for new tracks or playing tracks
 track_data=""
