@@ -54,10 +54,12 @@ export const render = ({ track }) => {
   // Determine if player is paused
   const isPaused = track.is_playing === false;
 
-  // Set artwork background if available
-  const artworkStyle = track.artwork_url
+  // Set artwork background - prefer local artwork_path, fallback to artwork_url
+  // This allows seamless transitions while new artwork is being downloaded
+  const artworkUrl = track.artwork_path || track.artwork_url;
+  const artworkStyle = artworkUrl
     ? {
-        backgroundImage: `url(${track.artwork_url})`,
+        backgroundImage: `url("${artworkUrl}")`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
       }
