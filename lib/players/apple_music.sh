@@ -39,24 +39,30 @@ apple_music_get_track_id_local() {
 
 # Get current track details from local Apple Music with robust JSON handling
 apple_music_get_track_details_local() {
-  # Get each value separately to avoid parsing issues
-  local track_id=$(osascript -e 'if application "Music" is running then tell application "Music" to if current track exists then get id of current track as string' 2>/dev/null)
-  local track_name=$(osascript -e 'if application "Music" is running then tell application "Music" to if current track exists then get name of current track' 2>/dev/null)
-  local artist_name=$(osascript -e 'if application "Music" is running then tell application "Music" to if current track exists then get artist of current track' 2>/dev/null)
-  local album_name=$(osascript -e 'if application "Music" is running then tell application "Music" to if current track exists then get album of current track' 2>/dev/null)
+  # Get all values in a single AppleScript call for performance
+  # Returns: track_id|track_name|artist|album (pipe-separated)
+  local track_data=$(osascript -e 'if application "Music" is running then tell application "Music" to if current track exists then get (id of current track as string) & "|" & (name of current track) & "|" & (artist of current track) & "|" & (album of current track)' 2>/dev/null)
 
-  if [ -n "$track_id" ] && [ -n "$track_name" ]; then
-    # Build JSON safely using jq
-    track_info=$(jq -n \
-      --arg id "$track_id" \
-      --arg name "$track_name" \
-      --arg artist "$artist_name" \
-      --arg album "$album_name" \
-      '{track_id: $id, track_name: $name, artist: $artist, album: $album, player: "apple_music"}')
+  if [ -n "$track_data" ]; then
+    # Split the pipe-separated values
+    local track_id=$(echo "$track_data" | cut -d'|' -f1)
+    local track_name=$(echo "$track_data" | cut -d'|' -f2)
+    local artist_name=$(echo "$track_data" | cut -d'|' -f3)
+    local album_name=$(echo "$track_data" | cut -d'|' -f4)
 
-    if [ -n "$track_info" ]; then
-      echo "$track_info"
-      return 0
+    if [ -n "$track_id" ] && [ -n "$track_name" ]; then
+      # Build JSON safely using jq
+      track_info=$(jq -n \
+        --arg id "$track_id" \
+        --arg name "$track_name" \
+        --arg artist "$artist_name" \
+        --arg album "$album_name" \
+        '{track_id: $id, track_name: $name, artist: $artist, album: $album, player: "apple_music"}')
+
+      if [ -n "$track_info" ]; then
+        echo "$track_info"
+        return 0
+      fi
     fi
   fi
 
@@ -64,54 +70,34 @@ apple_music_get_track_details_local() {
   return 1
 }
 
-# Get artwork for the current track
-apple_music_get_artwork() {
-  local destination="$1"
-  mkdir -p "$(dirname "$destination")" 2>/dev/null || log_fs_warn "Could not create artwork directory $(dirname "$destination")"
-  log_fs_debug "Saving Apple Music artwork to: $destination"
+# Get artwork as base64 data URL
+apple_music_get_artwork_data() {
+  log_fs_debug "Generating Apple Music artwork data"
 
-  result=$(osascript <<EOF
-  tell application "Music"
-    try
-      if player state is not stopped then
-        -- Get raw artwork data and determine format (not used further here)
-        set rawData to raw data of artwork 1 of current track
-        set savePath to "$destination"
-        -- Open the POSIX file for access
-        set fileRef to open for access (POSIX file savePath) with write permission
-        set eof fileRef to 0
-        write rawData to fileRef starting at 0
-        close access fileRef
-        tell application "System Events"
-          if exists file (POSIX file savePath) then
-            return "true"
-          else
-            return "false:file not created"
-          end if
-        end tell
-      else
-        return "false:player stopped"
-      end if
-    on error errMsg
-      try
-        close access fileRef
-      end try
-      return "false:" & errMsg
-    end try
-  end tell
-EOF
-)
+  # Extract raw artwork data and convert to base64 data URL
+  # AppleScript returns hex data in format «data tdta<hex>»
+  # We need to strip the wrapper and convert hex to binary, then base64 encode
+  local raw_output=$(osascript -e 'tell application "Music"
+    set rawData to raw data of artwork 1 of current track
+    return rawData
+  end tell' 2>/dev/null)
 
-  if [[ "$result" == "true" ]]; then
-    if [ -f "$destination" ] && [ -s "$destination" ]; then
-      log_fs_debug "Artwork successfully saved to $destination ($(stat -f%z "$destination") bytes)"
-      return 0
-    else
-      log_fs_warn "Artwork file missing or empty after save attempt"
-      return 1
-    fi
+  if [ -z "$raw_output" ]; then
+    log_fs_warn "Failed to get raw artwork data from Apple Music"
+    return 1
+  fi
+
+  # Strip «data tdta and » wrapper, convert hex to binary, then base64 encode
+  # Use -w 0 or -b 0 depending on base64 implementation to prevent line wrapping
+  local base64_data=$(echo "$raw_output" | sed 's/«data tdta//' | sed 's/»//' | xxd -r -p | base64 -b 0 2>/dev/null || echo "$raw_output" | sed 's/«data tdta//' | sed 's/»//' | xxd -r -p | base64 | tr -d '\n')
+
+  if [ -n "$base64_data" ]; then
+    local data_url="data:image/jpeg;base64,${base64_data}"
+    log_fs_debug "Successfully generated artwork data"
+    echo "$data_url"
+    return 0
   else
-    log_fs_warn "Failed to save artwork: $result"
+    log_fs_warn "Failed to encode artwork data to base64"
     return 1
   fi
 }
@@ -127,22 +113,14 @@ apple_music_get_track_info() {
   if [ -n "$track_info" ]; then
     track_data=$(echo "$track_info" | jq '.')
 
-    # Handle artwork
-    artwork_path="$artwork_dir/${track_id}.jpg"
+    # Handle artwork - use data URL directly (no caching for Apple Music)
+    artwork_data_url=$(apple_music_get_artwork_data | tr -d '\n\r')
 
-    # Check if artwork exists in cache
-    if [ -f "$artwork_path" ] && [ -s "$artwork_path" ]; then
-      log_fs_debug "Using cached Apple Music artwork from $artwork_path"
-      track_data=$(echo "$track_data" | jq --arg path "$artwork_path" '. + {artwork_url: $path}')
+    if [ -n "$artwork_data_url" ]; then
+      log_fs_debug "Using Apple Music artwork data"
+      track_data=$(echo "$track_data" | jq --arg url "$artwork_data_url" '. + {artwork_url: $url}')
     else
-      # Try to get new artwork - suppress mkdir errors
-      mkdir -p "$artwork_dir" 2>/dev/null || log_fs_warn "Could not create artwork directory $artwork_dir"
-      if apple_music_get_artwork "$artwork_path"; then
-        log_fs_debug "Apple Music artwork saved successfully"
-        track_data=$(echo "$track_data" | jq --arg path "$artwork_path" '. + {artwork_url: $path}')
-      else
-        log_fs_warn "Failed to get Apple Music artwork"
-      fi
+      log_fs_warn "Failed to get Apple Music artwork data"
     fi
 
     # Format JSON before returning
