@@ -183,16 +183,16 @@ export const className = `
     left: 0;
     bottom: 0;
     padding: ${scale(18)}px;
-    line-height: ${scale(16)}px;
+    line-height: ${scale(15)}px;
     text-shadow: 0 0 ${scale(15)}px rgba(255, 255, 255, 0.1);
     width: 85%;
   }
 
   #track {
     font-weight: 700;
-    margin: ${scale(6)}px 0 0;
-    line-height: ${scale(16)}px;
-    font-size: ${scale(16)}px;
+    margin: ${scale(5)}px 0 0;
+    line-height: ${scale(18)}px;
+    font-size: ${scale(18)}px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -216,11 +216,12 @@ export const className = `
   }
 
   #album {
+    font-size: ${scale(10)}px;
     font-style: italic;
     color: rgba(255, 255, 255, 0.6);
   }
 
   #now-playing.paused {
-    opacity: 0.7;
+    opacity: 0.5;
   }
 `;
