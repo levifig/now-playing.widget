@@ -32,15 +32,9 @@ Inspired by long abandoned apps like [Bowtie](http://bowtieapp.com/) and [CoverS
 ## Installation
 
 1. Make sure you have [Übersicht](http://tracesof.net/uebersicht/) installed
-2. Clone this repository to your Übersicht widgets folder:
-
-   ```bash
-   git clone https://github.com/levifig/now-playing.widget.git $HOME/Library/Application\ Support/Übersicht/widgets/now-playing.widget
-   ```
-
-3. That's it! The widget works out of the box with no additional configuration required.
-
-Alternatively, download the [ZIP archive](https://github.com/levifig/now-playing.widget/archive/master.zip) and extract it into your Übersicht widgets folder (i.e. `~/Library/Application Support/Übersicht/widgets`).
+2. Download the ZIP file from [Releases](https://github.com/levifig/now-playing.widget/releases).
+3. Move the extracted folder (`now-playing.widget`) into your "Widgets" folder (Ubersicht -> "Open Widgets Folder")
+4. That's it! The widget works out of the box with no additional configuration required.
 
 ## Player Priority
 
