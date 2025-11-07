@@ -20,6 +20,15 @@ Inspired by long abandoned apps like [Bowtie](http://bowtieapp.com/) and [CoverS
 - **Unified State Management**: All track and state information stored in a single JSON file
 - **Configurable Logging**: Multiple log levels with automatic rotation and retention management
 
+## Screenshots
+
+![Screenshot 1](http://raw.github.com/levifig/now-playing.widget/master/screenshot-01.png)
+
+![Screenshot 2](http://raw.github.com/levifig/now-playing.widget/master/screenshot-02.png)
+
+![Screenshot 3](http://raw.github.com/levifig/now-playing.widget/master/screenshot-03.png)
+
+
 ## Installation
 
 1. Make sure you have [Übersicht](http://tracesof.net/uebersicht/) installed
