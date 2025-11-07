@@ -8,6 +8,18 @@ Currently supports:
 
 Inspired by long abandoned apps like [Bowtie](http://bowtieapp.com/) and [CoverSutra](http://sophiestication.com/coversutra/), but focused solely on track information display, not control (I never really used those apps to control my media player).
 
+## Features
+
+- **Proportional Scaling**: Resize the entire widget with a single constant while maintaining visual consistency
+- **Intelligent Track Formatting**: Automatically styles secondary content (parentheses, brackets, dash-separated text) at 80% size with smart line breaking
+- **Optimized Artwork**:
+  - Apple Music uses base64 data URLs for instant artwork display
+  - Spotify uses smart URL-based caching to avoid redundant downloads
+- **Modern Typography**: Apple system fonts for native macOS integration
+- **Reliable Player Detection**: Uses `pgrep` for robust process detection
+- **Unified State Management**: All track and state information stored in a single JSON file
+- **Configurable Logging**: Multiple log levels with automatic rotation and retention management
+
 ## Installation
 
 1. Make sure you have [Übersicht](http://tracesof.net/uebersicht/) installed
@@ -30,20 +42,30 @@ When multiple music players are running at the same time, the widget will displa
 
 The first player in the list gets priority when multiple players are active. If only one player is running or playing, that player will be displayed regardless of priority.
 
-Player priority is currently set in `lib/get_track_metadata.sh` (line 24: `PLAYER_PRIORITY`).
+Player priority is currently set in `lib/get_track_metadata.sh` (line 29: `PLAYER_PRIORITY`).
 
 ## Customization
 
-### Alternate Layout
+### Widget Size
 
-For an alternate layout (pinned to the bottom of the screen), edit `now-playing.jsx` and replace the `className` export with the commented alternate version at the bottom of the file (around line 200).
+The widget includes a proportional scaling system for easy resizing. Edit the `WIDGET_SCALE` constant in `now-playing.jsx` (line 16):
 
-### Size and Appearance
+```javascript
+const WIDGET_SCALE = 100;  // Default size
+```
 
-All styling is configured in the `className` export in `now-playing.jsx`:
-- Adjust the width and height values to change the widget size
-- Modify the border-radius property to change the corner roundness
-- Customize colors, fonts, shadows, and positioning as desired
+- `100` = default size (300×300px)
+- `75` = 25% smaller (225×225px)
+- `125` = 25% larger (375×375px)
+
+All elements (text, spacing, shadows) scale proportionally, maintaining visual consistency at any size.
+
+### Advanced Styling
+
+For detailed customization, all styling is configured in the `className` export in `now-playing.jsx`:
+- Colors, fonts, and shadows
+- Widget positioning (default: bottom-left)
+- Opacity when paused
 
 ## Logging
 
