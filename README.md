@@ -22,11 +22,11 @@ Inspired by long abandoned apps like [Bowtie](http://bowtieapp.com/) and [CoverS
 
 ## Screenshots
 
-![Screenshot 1](http://raw.github.com/levifig/now-playing.widget/master/screenshot-01.png)
+![Screenshot 1](http://raw.github.com/levifig/now-playing.widget/master/docs/screenshot-01.png)
 
-![Screenshot 2](http://raw.github.com/levifig/now-playing.widget/master/screenshot-02.png)
+![Screenshot 2](http://raw.github.com/levifig/now-playing.widget/master/docs/screenshot-02.png)
 
-![Screenshot 3](http://raw.github.com/levifig/now-playing.widget/master/screenshot-03.png)
+![Screenshot 3](http://raw.github.com/levifig/now-playing.widget/master/docs/screenshot-03.png)
 
 
 ## Installation
