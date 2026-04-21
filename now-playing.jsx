@@ -15,8 +15,8 @@
 // 100 = default size, 75 = 25% smaller, 125 = 25% larger, etc.
 const WIDGET_SCALE = 100;
 
-export const command = "now-playing.widget/lib/get_track_metadata.sh";
 export const refreshFrequency = 5000;
+export const command = "now-playing.widget/lib/get_track_metadata.sh 2>/dev/null";
 
 // Helper function to scale pixel values proportionally
 const scale = (value) => (value * WIDGET_SCALE) / 100;
